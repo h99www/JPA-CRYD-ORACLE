@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>Title</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+</head>
+<body>
+	<div th:replace="common/header.html"></div>
+	<h3 align="center">신규 메뉴 등록</h3>
+	<form action="/menu/regist" method="post" align="center">
+		<label>메뉴 이름 : </label><input type="text" name="menuName"><br>
+		<label>메뉴 가격 : </label><input type="number" name="menuPrice"><br>
+		<label>카테고리 코드 : </label>
+		<select name="categoryCode" id="categoryCode">
+			<!-- ajax로 조회 -->
+			
+		</select>
+		<br>
+		<label>판매 상태 : </label>
+		<select name="orderableStatus">
+			<option value="Y">Y</option>
+			<option value="N">N</option>
+		</select>
+		<br>
+		<input type="submit" value="전송">
+	</form>
+	<script>
+		$(function() {
+            $.ajax({
+		        url: "/menu/category",
+		        success: function(data) {
+		            const $categoryCode = $("#categoryCode");
+                    $categoryCode.html("");
+                    const $categoryList = data.categoryList;
+                    console.log($categoryList);
+                    console.log($categoryList[0]);
+                    console.log($categoryList[0].categoryCode);
+                    console.log($categoryList[0].categoryName);
+                    
+                    for(let i = 0 ; i < $categoryList.length; i++) {
+                        $categoryCode.append($("<option>").val($categoryList[i].categoryCode).text($categoryList[i].categoryName));
+                    }
+		        },
+	            error: function(xhr) {
+                    console.log(xhr);
+	            }
+	            
+            });
+		});
+	</script>
+</body>
+</html>
